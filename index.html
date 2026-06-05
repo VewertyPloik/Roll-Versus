@@ -64,11 +64,12 @@
 
         h1 { 
             font-size: 3rem; 
-            margin-bottom: 1.5rem; 
+            margin-bottom: 1rem; 
             color: var(--text-main); 
             font-weight: 300;
             letter-spacing: 4px;
             text-align: center;
+            line-height: 1.1;
         }
 
         h1 span {
@@ -122,17 +123,34 @@
         }
 
         .menu-panel label {
-            font-size: 1.2rem;
+            font-size: 1rem;
             letter-spacing: 1px;
             display: block;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             color: #aaa;
+            margin-top: 10px;
+        }
+
+        .menu-panel label:first-child { margin-top: 0; }
+
+        select {
+            background: #111;
+            color: var(--accent);
+            border: 1px solid #444;
+            padding: 8px;
+            border-radius: 6px;
+            font-family: inherit;
+            letter-spacing: 1px;
+            outline: none;
+            margin-bottom: 10px;
+            width: 100%;
+            cursor: pointer;
         }
 
         input[type="range"] {
             width: 100%;
             accent-color: var(--accent);
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         #name-inputs {
@@ -141,6 +159,7 @@
             gap: 8px;
             overflow-y: auto;
             padding-right: 5px;
+            margin-top: 5px;
         }
 
         .name-input-row {
@@ -159,7 +178,6 @@
         
         input[type="text"]:focus { outline: none; border-color: var(--accent); }
 
-        /* Adjust UI Top Right Button */
         #adjust-btn {
             position: absolute;
             top: 15px;
@@ -181,7 +199,6 @@
             border-color: var(--accent);
         }
 
-        /* Adjust Popup */
         #adjust-popup-screen {
             background-color: rgba(15, 15, 19, 0.98);
             backdrop-filter: blur(8px);
@@ -208,7 +225,6 @@
         .btn-row { display: flex; gap: 10px; width: 100%; justify-content: center; }
         .btn-row .btn-small { flex: 1; }
 
-        /* Update Log */
         #update-log-screen {
             background-color: rgba(15, 15, 19, 0.98);
             backdrop-filter: blur(8px);
@@ -230,11 +246,10 @@
 
         .log-entry { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #333; }
         .log-entry:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .log-content p { color: #bbb; font-size: 1rem; line-height: 1.6; letter-spacing: 1px; margin-bottom: 8px; }
+        .log-content p { color: #bbb; font-size: 0.95rem; line-height: 1.5; letter-spacing: 1px; margin-bottom: 8px; }
         .log-content span.date { color: var(--accent); font-size: 0.85rem; display: block; margin-bottom: 5px; }
-        .log-content h3 { font-size: 1.4rem; color: #fff; margin-bottom: 5px; }
+        .log-content h3 { font-size: 1.3rem; color: #fff; margin-bottom: 5px; }
 
-        /* Game UI */
         #game-screen { display: flex; flex-direction: column; width: 100%; height: 100%; z-index: 5; }
 
         #game-ui {
@@ -242,7 +257,9 @@
             padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
         }
 
-        #turn-indicator { font-size: 1.3rem; letter-spacing: 2px; font-weight: 600; }
+        #turn-info { display: flex; flex-direction: column; }
+        #turn-indicator { font-size: 1.2rem; letter-spacing: 2px; font-weight: 600; }
+        #turn-sub { font-size: 0.8rem; color: #888; letter-spacing: 1px; margin-top: 2px; }
 
         #mini-leaderboard {
             text-align: right; font-size: 0.8rem; letter-spacing: 1px; line-height: 1.4;
@@ -254,12 +271,11 @@
 
         canvas { flex-grow: 1; width: 100%; display: block; background-color: var(--bg-base); }
 
-        /* Full Leaderboard Modal */
         #full-leaderboard-screen { background-color: rgba(15, 15, 19, 0.95); backdrop-filter: blur(5px); z-index: 15; }
         #full-leaderboard-list { margin: 20px 0; width: 80%; text-align: center; max-height: 60vh; overflow-y: auto; }
-        .lb-entry { padding: 10px; margin: 5px 0; background: #1a1a20; border: 1px solid #333; border-radius: 8px; font-size: 1.2rem; letter-spacing: 2px; }
+        .lb-entry { padding: 10px; margin: 5px 0; background: #1a1a20; border: 1px solid #333; border-radius: 8px; font-size: 1.1rem; letter-spacing: 1px; }
+        .lb-entry.eliminated { opacity: 0.5; text-decoration: line-through; }
 
-        /* Massive Awards Scroll Screen */
         #game-over-screen {
             display: block; 
             overflow-y: auto;
@@ -286,7 +302,7 @@
         }
 
         .award-title {
-            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-size: clamp(1.8rem, 7vw, 3.5rem);
             font-weight: 800;
             letter-spacing: 3px;
             margin-bottom: 10px;
@@ -297,8 +313,8 @@
         .award-icon {
             width: 45vw;
             height: 45vw;
-            max-width: 220px;
-            max-height: 220px;
+            max-width: 200px;
+            max-height: 200px;
             margin: 20px 0;
             display: flex;
             justify-content: center;
@@ -306,7 +322,7 @@
         }
 
         .award-winner {
-            font-size: clamp(2rem, 7vw, 3rem);
+            font-size: clamp(1.8rem, 6vw, 3rem);
             color: #fff;
             margin-bottom: 15px;
             letter-spacing: 2px;
@@ -316,7 +332,7 @@
         }
 
         .award-desc {
-            font-size: clamp(1rem, 4vw, 1.3rem);
+            font-size: clamp(0.95rem, 3.5vw, 1.2rem);
             color: #ddd;
             line-height: 1.5;
             max-width: 85%;
@@ -366,6 +382,21 @@
             font-weight: bold;
             text-align: right;
         }
+
+        /* Elimination Popup Styling */
+        #elim-popup-screen {
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 55;
+        }
+        
+        #elim-text {
+            color: #ff0055;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            line-height: 1.3;
+        }
     </style>
 </head>
 <body>
@@ -378,13 +409,20 @@
         <h1>roll<br><span>versus</span></h1>
         
         <div class="menu-panel">
+            <label>mode</label>
+            <select id="gameModeSelect">
+                <option value="standard">standard (first to 15)</option>
+                <option value="mini">mini (first to 7)</option>
+                <option value="elimination">elimination (3 rolls/rd)</option>
+            </select>
+
             <label id="player-count-label">players: 2</label>
             <input type="range" id="playerCount" min="2" max="8" value="2" oninput="updateSlider(this.value)">
             <div id="name-inputs"></div>
         </div>
 
         <button class="btn" onclick="startGame()">play</button>
-        <button class="btn btn-small" onclick="openUpdateLog()" style="margin-top: 10px;">update log</button>
+        <button class="btn btn-small" onclick="openUpdateLog()">updates</button>
     </div>
 
     <div id="adjust-popup-screen" class="screen hidden">
@@ -408,22 +446,31 @@
         <h2 style="font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 2px;">updates</h2>
         <div class="log-content">
             <div class="log-entry">
-                <h3>v1.1 refined awards</h3>
+                <h3>v1.1 mega update</h3>
                 <span class="date">jun 5 2026</span>
-                <p>• added most +2, +1, +0, and most resets awards.</p>
-                <p>• improved biggest sell & comeback logic.</p>
-                <p>• aligned award cards perfectly for smooth scrolling.</p>
-                <p>• replaced zoom with advanced adjust panel (zoom & crop).</p>
+                <p>• added <b>mini mode</b>! quick games (first to 7).</p>
+                <p>• added <b>elimination mode</b>! worst score after 3 rolls gets knocked out. (now features a +0 instead of a reset!)</p>
+                <p>• elimination notifications integrated.</p>
+                <p>• updated trophies to show total points collected.</p>
+                <p>• brought back 'most average' & 'most bounces' awards.</p>
+                <p>• redesigned 'comeback' award icon & changed 'resets' to a red X.</p>
+                <p>• filtered out incompatible awards in elimination mode.</p>
+                <p>• advanced adjust panel for zooming & panning.</p>
             </div>
             <div class="log-entry">
                 <h3>v1.0 base game</h3>
                 <span class="date">jun 5 2026</span>
                 <p>• initial release of roll versus.</p>
-                <p>• 2 to 8 player support.</p>
-                <p>• standard awards and physics.</p>
             </div>
         </div>
         <button class="btn" onclick="closeUpdateLog()">close</button>
+    </div>
+
+    <div id="elim-popup-screen" class="screen hidden">
+        <div class="menu-panel">
+            <h2 id="elim-text"></h2>
+            <button class="btn" onclick="closeElimPopup()">continue</button>
+        </div>
     </div>
 
     <div id="full-leaderboard-screen" class="screen hidden">
@@ -437,7 +484,10 @@
 
     <div id="game-screen" class="screen hidden">
         <div id="game-ui">
-            <div id="turn-indicator">player 1's turn</div>
+            <div id="turn-info">
+                <div id="turn-indicator">player 1's turn</div>
+                <div id="turn-sub"></div>
+            </div>
             <div id="mini-leaderboard" onclick="openLeaderboard()">
                 <span class="title">top 3 (click for all)</span>
                 <div id="mini-lb-content"></div>
@@ -454,12 +504,16 @@
     const ctx = canvas.getContext('2d');
     
     let width, height;
-    const TARGET_SCORE = 15;
+    let TARGET_SCORE = 15;
     
     let numPlayers = 2;
     let players = [];
     const playerColors = ['#00e5ff', '#ff0055', '#00ff88', '#ffea00', '#b200ff', '#ff6600', '#0088ff', '#ff00aa'];
     let turnIndex = 0;
+
+    let appMode = 'menu';
+    let gameMode = 'standard';
+    let roundNumber = 1;
 
     let gameState = 'menu';
     let previousGameState = '';
@@ -474,9 +528,10 @@
     let barriers = [];
     let currentBounces = 0;
 
-    // Viewport Adjust Variables
     let currentZoom = 1.0;
     let currentPan = 0;
+
+    let elimCallback = null;
 
     window.onload = () => updateNameInputs(2);
 
@@ -492,11 +547,10 @@
 
     function changeZoom(amount) {
         currentZoom += amount;
-        // Clamp between 0.5 (50% zoom out) and 1.0 (100% normal)
         if (currentZoom < 0.5) currentZoom = 0.5;
         if (currentZoom > 1.0) currentZoom = 1.0;
         
-        currentZoom = Math.round(currentZoom * 10) / 10; // Avoid float weirdness
+        currentZoom = Math.round(currentZoom * 10) / 10;
         applyTransform();
         updateAdjustUI();
     }
@@ -521,6 +575,18 @@
     /* Screen Management */
     function openUpdateLog() { document.getElementById('update-log-screen').classList.remove('hidden'); }
     function closeUpdateLog() { document.getElementById('update-log-screen').classList.add('hidden'); }
+
+    function showElimPopup(losers, callback) {
+        const names = losers.map(l => l.name).join(' & ');
+        document.getElementById('elim-text').innerText = `${names} ${losers.length > 1 ? 'were' : 'was'} eliminated!`;
+        document.getElementById('elim-popup-screen').classList.remove('hidden');
+        elimCallback = callback;
+    }
+
+    function closeElimPopup() {
+        document.getElementById('elim-popup-screen').classList.add('hidden');
+        if (elimCallback) elimCallback();
+    }
 
     function updateSlider(val) {
         numPlayers = parseInt(val);
@@ -575,9 +641,10 @@
         const weights = [1.0, 0.9, 0.7, 1.5, 0.7, 0.9, 1.0]; 
         const totalWeight = weights.reduce((a, b) => a + b, 0);
         
+        const isElim = gameMode === 'elimination';
         const slotValues = [0, 1, 2, 0, 2, 1, 0];
-        const slotColors = ['#aaaaaa', '#00ff88', '#00e5ff', '#ff0055', '#00e5ff', '#00ff88', '#aaaaaa'];
-        const slotLabels = ['+0', '+1', '+2', 'reset', '+2', '+1', '+0'];
+        const slotColors = ['#aaaaaa', '#00ff88', '#00e5ff', isElim ? '#aaaaaa' : '#ff0055', '#00e5ff', '#00ff88', '#aaaaaa'];
+        const slotLabels = ['+0', '+1', '+2', isElim ? '+0' : 'reset', '+2', '+1', '+0'];
 
         const slotHeight = 60;
         const bottomMargin = 20;
@@ -614,7 +681,10 @@
                 id: i + 1,
                 name: playerName,
                 color: playerColors[i],
-                score: 0,
+                score: 0, 
+                roundScore: 0, 
+                roundRolls: 0, 
+                eliminated: false,
                 resetsHit: 0,
                 pointsLostToResets: 0,
                 rawPoints: 0,
@@ -628,10 +698,21 @@
             });
         }
         turnIndex = 0;
+        roundNumber = 1;
     }
 
     function getSortedPlayers() {
+        if (gameMode === 'elimination') {
+            return [...players].sort((a, b) => {
+                if (a.eliminated === b.eliminated) return b.score - a.score;
+                return a.eliminated ? 1 : -1;
+            });
+        }
         return [...players].sort((a, b) => b.score - a.score);
+    }
+
+    function getAlivePlayers() {
+        return players.filter(p => !p.eliminated);
     }
 
     function resetBall() {
@@ -645,12 +726,17 @@
     }
 
     function switchScreen(screenId) {
-        const screens = ['menu-screen', 'game-over-screen', 'full-leaderboard-screen', 'game-screen', 'update-log-screen', 'adjust-popup-screen'];
+        const screens = ['menu-screen', 'game-over-screen', 'full-leaderboard-screen', 'game-screen', 'update-log-screen', 'adjust-popup-screen', 'elim-popup-screen'];
         screens.forEach(id => document.getElementById(id).classList.add('hidden'));
         document.getElementById(screenId).classList.remove('hidden');
     }
 
     function startGame() {
+        gameMode = document.getElementById('gameModeSelect').value;
+        
+        if (gameMode === 'mini') TARGET_SCORE = 7;
+        else TARGET_SCORE = 15; 
+        
         switchScreen('game-screen');
         initPlayers();
         gameState = 'aiming';
@@ -677,10 +763,17 @@
         
         sorted.forEach((p, i) => {
             const div = document.createElement('div');
-            div.className = 'lb-entry';
-            div.style.color = p.color;
-            div.style.borderColor = p.color;
-            div.innerText = `${i + 1}. ${p.name} - ${p.score} pts`;
+            div.className = `lb-entry ${p.eliminated ? 'eliminated' : ''}`;
+            div.style.color = p.eliminated ? '#888' : p.color;
+            div.style.borderColor = p.eliminated ? '#444' : p.color;
+            
+            let scoreText = `${p.score} pts`;
+            if (gameMode === 'elimination') {
+                if (p.eliminated) scoreText += ' (elim)';
+                else scoreText += ` | rd: ${p.roundScore}`;
+            }
+
+            div.innerText = `${i + 1}. ${p.name} - ${scoreText}`;
             list.appendChild(div);
         });
     }
@@ -692,19 +785,29 @@
 
     function updateUI() {
         const turnInd = document.getElementById('turn-indicator');
+        const turnSub = document.getElementById('turn-sub');
         const p = players[turnIndex];
+        
         turnInd.innerText = `${p.name}'s turn`;
         turnInd.style.color = p.color;
         turnInd.style.textShadow = `0 0 10px ${p.color}88`;
 
+        if (gameMode === 'standard' || gameMode === 'mini') {
+            turnSub.innerText = `first to ${TARGET_SCORE}`;
+        } else {
+            turnSub.innerText = `rd ${roundNumber} | roll ${p.roundRolls + 1}/3 | rd score: ${p.roundScore}`;
+        }
+
         const miniLb = document.getElementById('mini-lb-content');
         miniLb.innerHTML = '';
         const sorted = getSortedPlayers();
-        const displayCount = Math.min(3, sorted.length);
         
-        for(let i = 0; i < displayCount; i++) {
+        let displayCount = 0;
+        for(let i = 0; i < sorted.length && displayCount < 3; i++) {
             const sp = sorted[i];
-            miniLb.innerHTML += `<div style="color: ${sp.color};">${i+1}. ${sp.name} (${sp.score})</div>`;
+            let extra = gameMode === 'elimination' && !sp.eliminated ? ` (rd: ${sp.roundScore})` : '';
+            miniLb.innerHTML += `<div style="color: ${sp.eliminated ? '#666' : sp.color}; ${sp.eliminated ? 'text-decoration:line-through;' : ''}">${i+1}. ${sp.name}: ${sp.score}${extra}</div>`;
+            displayCount++;
         }
     }
 
@@ -725,7 +828,6 @@
             p.maxBounces = currentBounces;
         }
 
-        // Calculate state before point application for records
         let othersScores = players.filter(pl => pl.id !== p.id).map(pl => pl.score);
         let maxOtherScore = Math.max(...othersScores, 0);
         
@@ -738,21 +840,64 @@
         if (slot.label === 'reset') {
             p.pointsLostToResets += p.score;
             p.score = 0;
+            p.roundScore = 0;
             p.resetsHit++;
         } else {
             p.score += slot.value;
+            p.roundScore += slot.value;
             p.rawPoints += slot.value;
             if (slot.value === 2) p.plus2s++;
             if (slot.value === 1) p.plus1s++;
             if (slot.value === 0) p.plus0s++;
         }
         
-        if (p.score >= TARGET_SCORE) {
-            endGame(p);
-        } else {
+        if (gameMode === 'standard' || gameMode === 'mini') {
+            if (p.score >= TARGET_SCORE) {
+                endGame(p);
+                return;
+            }
             turnIndex = (turnIndex + 1) % numPlayers;
             updateUI();
             resetBall();
+        } 
+        else if (gameMode === 'elimination') {
+            p.roundRolls++;
+            let alive = getAlivePlayers();
+            let roundOver = alive.every(pl => pl.roundRolls >= 3);
+
+            if (roundOver) {
+                let minScore = Math.min(...alive.map(pl => pl.roundScore));
+                let losers = alive.filter(pl => pl.roundScore === minScore);
+                
+                losers.forEach(l => l.eliminated = true);
+                
+                let stillAlive = getAlivePlayers();
+                if (stillAlive.length === 1) {
+                    showElimPopup(losers, () => endGame(stillAlive[0]));
+                    return;
+                } else if (stillAlive.length === 0) {
+                    showElimPopup(losers, () => endGame(null));
+                    return;
+                } else {
+                    roundNumber++;
+                    stillAlive.forEach(pl => {
+                        pl.roundRolls = 0;
+                        pl.roundScore = 0;
+                    });
+                    showElimPopup(losers, () => {
+                        do { turnIndex = (turnIndex + 1) % numPlayers; } while (players[turnIndex].eliminated && getAlivePlayers().length > 0);
+                        updateUI();
+                        resetBall();
+                    });
+                    return;
+                }
+            } else {
+                do {
+                    turnIndex = (turnIndex + 1) % numPlayers;
+                } while (players[turnIndex].eliminated && getAlivePlayers().length > 0);
+                updateUI();
+                resetBall();
+            }
         }
     }
 
@@ -761,7 +906,7 @@
         silver: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="silvGlow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffff"/><stop offset="40%" stop-color="#e0e0e0"/><stop offset="70%" stop-color="#a0a0a0"/><stop offset="100%" stop-color="#555555"/></linearGradient></defs><path d="M20 25c0 25 15 35 30 40c15-5 30-15 30-40z" fill="url(#silvGlow)" stroke="#fff" stroke-width="2"/><rect x="42" y="65" width="16" height="15" fill="url(#silvGlow)"/><path d="M30 80h40v10H30z" fill="url(#silvGlow)" stroke="#444" stroke-width="1"/></svg>`,
         bronze: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="brzGlow" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffccaa"/><stop offset="40%" stop-color="#cd7f32"/><stop offset="80%" stop-color="#8b5a2b"/><stop offset="100%" stop-color="#4a3017"/></linearGradient></defs><path d="M25 30c0 20 15 25 25 30c10-5 25-10 25-30z" fill="url(#brzGlow)" stroke="#fff" stroke-width="1.5" stroke-opacity="0.6"/><rect x="44" y="60" width="12" height="15" fill="url(#brzGlow)"/><path d="M35 75h30v10H35z" fill="url(#brzGlow)"/></svg>`,
         sell: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="redDrop" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ff6699"/><stop offset="50%" stop-color="#ff0055"/><stop offset="100%" stop-color="#880022"/></linearGradient></defs><polyline points="20,10 40,45 60,25 85,75" fill="none" stroke="url(#redDrop)" stroke-width="12" stroke-linejoin="miter" stroke-linecap="round"/><polygon points="85,85 65,70 95,65" fill="url(#redDrop)"/></svg>`,
-        comeback: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="grnGlow" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#006633"/><stop offset="50%" stop-color="#00ff88"/><stop offset="100%" stop-color="#ccffcc"/></linearGradient></defs><path d="M10 85 Q 40 85, 60 45 T 85 15" fill="none" stroke="url(#grnGlow)" stroke-width="10" stroke-linecap="round"/><polygon points="85,15 65,10 90,35" fill="url(#grnGlow)"/><circle cx="20" cy="75" r="5" fill="#00ff88"/><circle cx="35" cy="65" r="3" fill="#00ff88"/></svg>`,
+        comeback: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="grnGlow" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="#006633"/><stop offset="50%" stop-color="#00ff88"/><stop offset="100%" stop-color="#ccffcc"/></linearGradient></defs><path d="M 20 80 C 40 80, 50 30, 80 20" fill="none" stroke="url(#grnGlow)" stroke-width="10" stroke-linecap="round"/><polygon points="70,10 90,20 75,35" fill="url(#grnGlow)"/></svg>`,
         least: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><radialGradient id="sadOrb" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#ffffff"/><stop offset="40%" stop-color="#aaaaaa"/><stop offset="100%" stop-color="#333333"/></radialGradient></defs><circle cx="50" cy="50" r="35" fill="url(#sadOrb)" stroke="#fff" stroke-width="2" stroke-opacity="0.3"/><path d="M40 30l10 15l-5 10l15 15" fill="none" stroke="#222" stroke-width="4" stroke-linejoin="round"/></svg>`,
         mostRaw: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="dimTop" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e6ffff"/><stop offset="100%" stop-color="#00e5ff"/></linearGradient><linearGradient id="dimBot" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#005566"/></linearGradient></defs><polygon points="50,15 75,35 25,35" fill="url(#dimTop)" stroke="#fff" stroke-width="1" stroke-opacity="0.8"/><polygon points="25,35 75,35 50,85" fill="url(#dimBot)" stroke="#fff" stroke-width="1" stroke-opacity="0.5"/><line x1="50" y1="15" x2="50" y2="85" stroke="#fff" stroke-width="1.5" stroke-opacity="0.4"/></svg>`,
         average: `<svg viewBox="0 0 100 100" width="100%" height="100%"><defs><linearGradient id="sGold" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#ffffcc"/><stop offset="50%" stop-color="#ffea00"/><stop offset="100%" stop-color="#998800"/></linearGradient></defs><path d="M50 85v-50M20 50l30-15l30 15v10H20z" stroke="url(#sGold)" stroke-width="4" fill="none"/><circle cx="20" cy="65" r="12" fill="url(#sGold)" opacity="0.8"/><circle cx="80" cy="65" r="12" fill="url(#sGold)" opacity="0.8"/><path d="M35 85h30v8H35z" fill="url(#sGold)"/></svg>`,
@@ -769,7 +914,7 @@
         most2: `<svg viewBox="0 0 100 100" width="100%" height="100%"><text x="50" y="65" font-family="Arial, sans-serif" font-weight="900" font-size="60" fill="#00e5ff" text-anchor="middle" stroke="#fff" stroke-width="2">+2</text><circle cx="50" cy="50" r="45" fill="none" stroke="#00e5ff" stroke-width="4" stroke-dasharray="10,5"/></svg>`,
         most1: `<svg viewBox="0 0 100 100" width="100%" height="100%"><text x="50" y="65" font-family="Arial, sans-serif" font-weight="900" font-size="60" fill="#00ff88" text-anchor="middle" stroke="#fff" stroke-width="2">+1</text><circle cx="50" cy="50" r="45" fill="none" stroke="#00ff88" stroke-width="4" stroke-dasharray="10,5"/></svg>`,
         most0: `<svg viewBox="0 0 100 100" width="100%" height="100%"><text x="50" y="65" font-family="Arial, sans-serif" font-weight="900" font-size="60" fill="#aaaaaa" text-anchor="middle" stroke="#fff" stroke-width="2">+0</text><circle cx="50" cy="50" r="45" fill="none" stroke="#aaaaaa" stroke-width="4" stroke-dasharray="10,5"/></svg>`,
-        resets: `<svg viewBox="0 0 100 100" width="100%" height="100%"><path d="M50 15 A 35 35 0 1 1 15 50 L 25 50 A 25 25 0 1 0 50 25 L 50 15 Z" fill="#ff0055"/><polygon points="40,20 60,20 50,5" fill="#ff0055"/><text x="50" y="60" font-family="Arial, sans-serif" font-weight="900" font-size="25" fill="#fff" text-anchor="middle">RST</text></svg>`
+        resets: `<svg viewBox="0 0 100 100" width="100%" height="100%"><line x1="20" y1="20" x2="80" y2="80" stroke="#ff0055" stroke-width="15" stroke-linecap="round"/><line x1="80" y1="20" x2="20" y2="80" stroke="#ff0055" stroke-width="15" stroke-linecap="round"/></svg>`
     };
 
     function generateAwardSlide(title, player, desc, iconSvg, titleColor) {
@@ -784,96 +929,108 @@
         `;
     }
 
-    function endGame(winner) {
+    function endGame(winnerPlayer) {
         gameState = 'gameover';
         
         const container = document.getElementById('game-over-screen');
         container.innerHTML = '';
         container.scrollTop = 0;
         
-        const sorted = getSortedPlayers();
+        let sorted = getSortedPlayers();
+        if (winnerPlayer) {
+            sorted = [winnerPlayer, ...players.filter(p => p.id !== winnerPlayer.id).sort((a,b) => b.score - a.score)];
+        }
 
-        // 1st, 2nd, 3rd
-        container.innerHTML += generateAwardSlide('1st place', sorted[0], '', icons.gold, 'var(--gold)');
+        if (sorted[0]) {
+            let desc = `Finished with ${sorted[0].score} points. (Total collected: ${sorted[0].rawPoints})`;
+            container.innerHTML += generateAwardSlide('1st place', sorted[0], desc, icons.gold, 'var(--gold)');
+        }
         if (sorted.length > 1) {
-            container.innerHTML += generateAwardSlide('2nd place', sorted[1], '', icons.silver, 'var(--silver)');
+            let desc = `Finished with ${sorted[1].score} points. (Total collected: ${sorted[1].rawPoints})`;
+            container.innerHTML += generateAwardSlide('2nd place', sorted[1], desc, icons.silver, 'var(--silver)');
         }
         if (sorted.length > 2) {
-            container.innerHTML += generateAwardSlide('3rd place', sorted[2], '', icons.bronze, 'var(--bronze)');
+            let desc = `Finished with ${sorted[2].score} points. (Total collected: ${sorted[2].rawPoints})`;
+            container.innerHTML += generateAwardSlide('3rd place', sorted[2], desc, icons.bronze, 'var(--bronze)');
         }
 
-        // Biggest Sell
-        let biggestSeller = null;
-        let maxSellVal = -1;
-        players.forEach(p => {
-            // Give award if they DID NOT WIN, and had a lead or lost points to resets.
-            if (p.id !== sorted[0].id || sorted.length === 1) {
-                let sellScore = (p.maxLead * 1.5) + p.pointsLostToResets;
-                if (sellScore > maxSellVal && sellScore > 0) {
-                    maxSellVal = sellScore;
-                    biggestSeller = p;
+        if (gameMode !== 'elimination') {
+            let biggestSeller = null;
+            let maxSellVal = -1;
+            players.forEach(p => {
+                if (!sorted[0] || p.id !== sorted[0].id || sorted.length === 1) {
+                    let sellScore = (p.maxLead * 1.5) + p.pointsLostToResets;
+                    if (sellScore > maxSellVal && sellScore > 0) {
+                        maxSellVal = sellScore;
+                        biggestSeller = p;
+                    }
                 }
+            });
+            if (biggestSeller) {
+                let msg = `${biggestSeller.name} choked. they had a max lead of ${biggestSeller.maxLead} points, and lost ${biggestSeller.pointsLostToResets} points to resets.`;
+                container.innerHTML += generateAwardSlide('biggest sell', biggestSeller, msg, icons.sell, '#ff0055');
             }
-        });
-        if (biggestSeller) {
-            let msg = `${biggestSeller.name} choked. they had a max lead of ${biggestSeller.maxLead} points, and lost ${biggestSeller.pointsLostToResets} points to resets.`;
-            container.innerHTML += generateAwardSlide('biggest sell', biggestSeller, msg, icons.sell, '#ff0055');
-        }
 
-        // Greatest Comeback
-        let cbKid = null;
-        let maxCbScore = -1;
-        players.forEach(p => {
-            if (p.maxDeficit > 0) {
-                // Val is mostly based on the deficit they faced, tie breaker is their final score
-                let cbScore = (p.maxDeficit * 100) + p.score;
-                if (cbScore > maxCbScore) {
-                    maxCbScore = cbScore;
-                    cbKid = p;
+            let cbKid = null;
+            let maxCbScore = -1;
+            players.forEach(p => {
+                if (p.maxDeficit > 0) {
+                    let cbScore = (p.maxDeficit * 100) + p.score;
+                    if (cbScore > maxCbScore) {
+                        maxCbScore = cbScore;
+                        cbKid = p;
+                    }
                 }
+            });
+            if (cbKid) {
+                container.innerHTML += generateAwardSlide('greatest comeback', cbKid, `${cbKid.name} fought back after trailing by a massive ${cbKid.maxDeficit} points at one stage.`, icons.comeback, '#00ff88');
             }
-        });
-        if (cbKid) {
-            container.innerHTML += generateAwardSlide('greatest comeback', cbKid, `${cbKid.name} fought back after trailing by a massive ${cbKid.maxDeficit} points at one stage.`, icons.comeback, '#00ff88');
+
+            const topResets = Math.max(...players.map(p => p.resetsHit));
+            if (topResets > 0) {
+                const resetPlayer = players.find(p => p.resetsHit === topResets);
+                container.innerHTML += generateAwardSlide('most resets', resetPlayer, `${resetPlayer.name} loved the reset box, hitting it ${topResets} times.`, icons.resets, '#ff0055');
+            }
         }
 
-        // Most Resets
-        const topResets = Math.max(...players.map(p => p.resetsHit));
-        if (topResets > 0) {
-            const resetPlayer = players.find(p => p.resetsHit === topResets);
-            container.innerHTML += generateAwardSlide('most resets', resetPlayer, `${resetPlayer.name} loved the reset box, hitting it ${topResets} times.`, icons.resets, '#ff0055');
-        }
-
-        // Most +2
         const top2s = Math.max(...players.map(p => p.plus2s));
         if (top2s > 0) {
             const p2 = players.find(p => p.plus2s === top2s);
             container.innerHTML += generateAwardSlide('most +2 hits', p2, `${p2.name} nailed the +2 target ${top2s} times.`, icons.most2, '#00e5ff');
         }
 
-        // Most +1
         const top1s = Math.max(...players.map(p => p.plus1s));
         if (top1s > 0) {
             const p1 = players.find(p => p.plus1s === top1s);
             container.innerHTML += generateAwardSlide('most +1 hits', p1, `${p1.name} hit the +1 target ${top1s} times.`, icons.most1, '#00ff88');
         }
 
-        // Most +0
         const top0s = Math.max(...players.map(p => p.plus0s));
         if (top0s > 0) {
             const p0 = players.find(p => p.plus0s === top0s);
             container.innerHTML += generateAwardSlide('most +0 hits', p0, `${p0.name} somehow hit the zero edges ${top0s} times.`, icons.most0, '#aaaaaa');
         }
 
-        // Least Points overall
-        const leastPlayer = sorted[sorted.length - 1];
-        container.innerHTML += generateAwardSlide('least points', leastPlayer, `${leastPlayer.name} finished dead last with only ${leastPlayer.score} points.`, icons.least, '#aaaaaa');
+        const topBounces = Math.max(...players.map(p => p.maxBounces));
+        if (topBounces > 0) {
+            const bouncePlayer = players.find(p => p.maxBounces === topBounces);
+            container.innerHTML += generateAwardSlide('most bounces', bouncePlayer, `${bouncePlayer.name} hit ${topBounces} bounces in a single majestic shot.`, icons.bounces, '#b200ff');
+        }
 
-        // Most Raw Points
+        const totalGameScore = players.reduce((sum, p) => sum + p.score, 0);
+        const avgScore = totalGameScore / numPlayers;
+        const avgPlayer = players.reduce((prev, curr) => Math.abs(curr.score - avgScore) < Math.abs(prev.score - avgScore) ? curr : prev);
+        container.innerHTML += generateAwardSlide('most average', avgPlayer, `${avgPlayer.name}'s score of ${avgPlayer.score} was incredibly close to the game's average of ${avgScore.toFixed(1)}.`, icons.average, '#ffea00');
+
+        if (gameMode !== 'elimination') {
+            const leastPlayer = players.reduce((prev, curr) => curr.score < prev.score ? curr : prev);
+            container.innerHTML += generateAwardSlide('least points', leastPlayer, `${leastPlayer.name} finished dead last with only ${leastPlayer.score} points.`, icons.least, '#aaaaaa');
+        }
+
         const mostRawScore = Math.max(...players.map(p => p.rawPoints));
         const rawPlayer = players.find(p => p.rawPoints === mostRawScore);
-        if (rawPlayer.rawPoints > rawPlayer.score) {
-            container.innerHTML += generateAwardSlide('most raw points', rawPlayer, `${rawPlayer.name} scored ${mostRawScore} total points before resets ripped them away.`, icons.mostRaw, '#00e5ff');
+        if (mostRawScore > 0) {
+            container.innerHTML += generateAwardSlide('most raw points', rawPlayer, `${rawPlayer.name} had ${mostRawScore} points as a whole.`, icons.mostRaw, '#00e5ff');
         }
 
         container.innerHTML += `
@@ -919,7 +1076,7 @@
     }
 
     function update() {
-        if (gameState === 'leaderboard') {
+        if (gameState === 'leaderboard' || !document.getElementById('elim-popup-screen').classList.contains('hidden')) {
             requestAnimationFrame(update);
             return;
         }
