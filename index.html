@@ -45,6 +45,11 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            transition: transform 0.3s ease;
+        }
+
+        #app-container.zoomed {
+            transform: scale(0.9);
         }
 
         .screen {
@@ -96,12 +101,19 @@
             color: var(--accent);
         }
 
+        .btn-small {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            width: auto;
+            margin-top: 5px;
+        }
+
         .menu-panel {
             background: var(--ui-bg);
             padding: 20px;
             border-radius: 8px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             width: 280px;
             border: 1px solid #333;
             max-height: 50vh;
@@ -146,6 +158,61 @@
         }
         
         input[type="text"]:focus { outline: none; border-color: var(--accent); }
+
+        /* Zoom Button */
+        #zoom-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #1a1a20;
+            color: #888;
+            border: 1px solid #444;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 50;
+            transition: all 0.2s ease;
+        }
+
+        #zoom-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Update Log */
+        #update-log-screen {
+            background-color: rgba(15, 15, 19, 0.98);
+            backdrop-filter: blur(8px);
+            z-index: 60;
+        }
+
+        .log-content {
+            background: var(--ui-bg);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 350px;
+            text-align: left;
+        }
+
+        .log-content p {
+            color: #bbb;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .log-content span.date {
+            color: var(--accent);
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 5px;
+        }
 
         /* Game UI */
         #game-screen {
@@ -204,7 +271,6 @@
             font-weight: 800;
             letter-spacing: 4px;
             margin-bottom: 20px;
-            /* Dynamic shadow added via JS */
         }
 
         .award-icon {
@@ -213,7 +279,6 @@
             max-width: 280px;
             max-height: 280px;
             margin: 30px 0;
-            /* Dynamic drop shadow added in JS to match icon */
         }
 
         .award-winner {
@@ -262,7 +327,6 @@
             background-color: #0a0a0d;
         }
 
-        /* WATERMARK UPDATED */
         .watermark {
             position: absolute; 
             bottom: 15px; 
@@ -281,7 +345,10 @@
 <body>
 
 <div id="app-container">
+    
     <div id="menu-screen" class="screen">
+        <button id="zoom-btn" onclick="toggleZoom()">zoom out</button>
+        
         <h1>roll<br><span>versus</span></h1>
         
         <div class="menu-panel">
@@ -291,6 +358,16 @@
         </div>
 
         <button class="btn" onclick="startGame()">play</button>
+        <button class="btn btn-small" onclick="openUpdateLog()">update log</button>
+    </div>
+
+    <div id="update-log-screen" class="screen hidden">
+        <h2 style="font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 2px;">update log</h2>
+        <div class="log-content">
+            <span class="date">jun 5 2026</span>
+            <p>• v1.0 base game</p>
+        </div>
+        <button class="btn" onclick="closeUpdateLog()">close</button>
     </div>
 
     <div id="full-leaderboard-screen" class="screen hidden">
@@ -342,6 +419,26 @@
     let currentBounces = 0;
 
     window.onload = () => updateNameInputs(2);
+
+    function toggleZoom() {
+        const app = document.getElementById('app-container');
+        const btn = document.getElementById('zoom-btn');
+        app.classList.toggle('zoomed');
+        
+        if (app.classList.contains('zoomed')) {
+            btn.innerText = 'zoom in';
+        } else {
+            btn.innerText = 'zoom out';
+        }
+    }
+
+    function openUpdateLog() {
+        document.getElementById('update-log-screen').classList.remove('hidden');
+    }
+
+    function closeUpdateLog() {
+        document.getElementById('update-log-screen').classList.add('hidden');
+    }
 
     function updateSlider(val) {
         numPlayers = parseInt(val);
@@ -461,7 +558,7 @@
     }
 
     function switchScreen(screenId) {
-        const screens = ['menu-screen', 'game-over-screen', 'full-leaderboard-screen', 'game-screen'];
+        const screens = ['menu-screen', 'game-over-screen', 'full-leaderboard-screen', 'game-screen', 'update-log-screen'];
         screens.forEach(id => document.getElementById(id).classList.add('hidden'));
         document.getElementById(screenId).classList.remove('hidden');
     }
@@ -562,7 +659,6 @@
         }
     }
 
-    // HIGH QUALITY, SHINY UPGRADED AWARDS SVGS
     const icons = {
         gold: `
             <svg viewBox="0 0 100 100" width="100%" height="100%">
