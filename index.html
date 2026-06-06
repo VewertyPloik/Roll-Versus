@@ -259,7 +259,7 @@
 
         #turn-info { display: flex; flex-direction: column; }
         #turn-indicator { font-size: 1.2rem; letter-spacing: 2px; font-weight: 600; }
-        #turn-sub { font-size: 0.8rem; color: #888; letter-spacing: 1px; margin-top: 2px; }
+        #turn-sub { font-size: 0.8rem; color: #888; letter-spacing: 1px; margin-top: 2px; transition: color 0.3s; }
 
         #mini-leaderboard {
             text-align: right; font-size: 0.8rem; letter-spacing: 1px; line-height: 1.4;
@@ -271,7 +271,7 @@
 
         canvas { flex-grow: 1; width: 100%; display: block; background-color: var(--bg-base); }
 
-        #full-leaderboard-screen { background-color: rgba(15, 15, 19, 0.95); backdrop-filter: blur(5px); z-index: 15; }
+        #full-leaderboard-screen { background-color: rgba(15, 15, 19, 0.95); backdrop-filter: blur(5px); z-index: 80; }
         #full-leaderboard-list { margin: 20px 0; width: 80%; text-align: center; max-height: 60vh; overflow-y: auto; }
         .lb-entry { padding: 10px; margin: 5px 0; background: #1a1a20; border: 1px solid #333; border-radius: 8px; font-size: 1.1rem; letter-spacing: 1px; }
         .lb-entry.eliminated { opacity: 0.5; text-decoration: line-through; }
@@ -377,13 +377,12 @@
             color: #ffffff; 
             opacity: 0.2; 
             pointer-events: none; 
-            z-index: 50; 
+            z-index: 90; 
             letter-spacing: 1.5px;
             font-weight: bold;
             text-align: right;
         }
 
-        /* Elimination Popup Styling */
         #elim-popup-screen {
             background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(4px);
@@ -396,6 +395,17 @@
             font-size: 1.8rem;
             letter-spacing: 2px;
             line-height: 1.3;
+        }
+
+        #tiebreaker-popup-screen {
+            background-color: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(6px);
+            z-index: 85;
+        }
+
+        #tiebreaker-popup-screen .menu-panel {
+            border-color: #ff0055;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.3);
         }
     </style>
 </head>
@@ -446,14 +456,21 @@
         <h2 style="font-size: 2.5rem; margin-bottom: 20px; letter-spacing: 2px;">updates</h2>
         <div class="log-content">
             <div class="log-entry">
+                <h3>v1.2 the nice update</h3>
+                <span class="date">jun 6 2026</span>
+                <p>• added the end game leaderboard so you can see the final standings.</p>
+                <p>• fixed the game over scroll bug.</p>
+                <p>• added a dramatic tiebreaker popup for sudden death situations.</p>
+            </div>
+            <div class="log-entry">
                 <h3>v1.1 mega update</h3>
                 <span class="date">jun 5 2026</span>
-                <p>• added <b>mini mode</b>! quick games (first to 7).</p>
-                <p>• added <b>elimination mode</b>! worst score after 3 rolls gets knocked out. (now features a +0 instead of a reset!)</p>
+                <p>• added mini mode! quick games (first to 7).</p>
+                <p>• added elimination mode! worst score after 3 rolls gets knocked out. (now features a +0 instead of a reset!)</p>
                 <p>• elimination notifications integrated.</p>
                 <p>• updated trophies to show total points collected.</p>
                 <p>• brought back 'most average' & 'most bounces' awards.</p>
-                <p>• redesigned 'comeback' award icon & changed 'resets' to a red X.</p>
+                <p>• redesigned 'comeback' award icon & changed 'resets' to a red x.</p>
                 <p>• filtered out incompatible awards in elimination mode.</p>
                 <p>• advanced adjust panel for zooming & panning.</p>
             </div>
@@ -466,6 +483,14 @@
         <button class="btn" onclick="closeUpdateLog()">close</button>
     </div>
 
+    <div id="tiebreaker-popup-screen" class="screen hidden">
+        <div class="menu-panel">
+            <h2 style="color: #ff0055; font-size: 2rem; margin-bottom: 10px; letter-spacing: 2px;">tiebreaker!</h2>
+            <p id="tiebreaker-text" style="color: #e0e0e0; font-size: 1.2rem; margin-bottom: 20px; line-height: 1.5;"></p>
+            <button class="btn" onclick="closeTiebreakerPopup()">let's go</button>
+        </div>
+    </div>
+
     <div id="elim-popup-screen" class="screen hidden">
         <div class="menu-panel">
             <h2 id="elim-text"></h2>
@@ -476,7 +501,7 @@
     <div id="full-leaderboard-screen" class="screen hidden">
         <h1 style="font-size: 2.5rem; margin-bottom: 0;">leaderboard</h1>
         <div id="full-leaderboard-list"></div>
-        <button class="btn" onclick="closeLeaderboard()">resume game</button>
+        <button class="btn" onclick="closeLeaderboard()">close / resume</button>
     </div>
 
     <div id="game-over-screen" class="screen hidden">
@@ -532,6 +557,11 @@
     let currentPan = 0;
 
     let elimCallback = null;
+    let tiebreakerCallback = null;
+    
+    // Sudden Death & Elim variables
+    let inSuddenDeath = false;
+    let currentElimRank = 0;
 
     window.onload = () => updateNameInputs(2);
 
@@ -575,6 +605,18 @@
     /* Screen Management */
     function openUpdateLog() { document.getElementById('update-log-screen').classList.remove('hidden'); }
     function closeUpdateLog() { document.getElementById('update-log-screen').classList.add('hidden'); }
+
+    function showTiebreakerPopup(tiedPlayers, callback) {
+        const names = tiedPlayers.map(p => p.name).join(' vs ');
+        document.getElementById('tiebreaker-text').innerText = `${names}\n\none roll. sudden death.`;
+        document.getElementById('tiebreaker-popup-screen').classList.remove('hidden');
+        tiebreakerCallback = callback;
+    }
+
+    function closeTiebreakerPopup() {
+        document.getElementById('tiebreaker-popup-screen').classList.add('hidden');
+        if (tiebreakerCallback) tiebreakerCallback();
+    }
 
     function showElimPopup(losers, callback) {
         const names = losers.map(l => l.name).join(' & ');
@@ -685,6 +727,10 @@
                 roundScore: 0, 
                 roundRolls: 0, 
                 eliminated: false,
+                elimRank: 0, 
+                inSD: false,
+                sdRolls: 0,
+                sdScore: 0,
                 resetsHit: 0,
                 pointsLostToResets: 0,
                 rawPoints: 0,
@@ -699,13 +745,17 @@
         }
         turnIndex = 0;
         roundNumber = 1;
+        inSuddenDeath = false;
+        currentElimRank = numPlayers;
     }
 
     function getSortedPlayers() {
         if (gameMode === 'elimination') {
             return [...players].sort((a, b) => {
-                if (a.eliminated === b.eliminated) return b.score - a.score;
-                return a.eliminated ? 1 : -1;
+                let rankA = a.elimRank || currentElimRank;
+                let rankB = b.elimRank || currentElimRank;
+                if (rankA !== rankB) return rankA - rankB;
+                return b.score - a.score;
             });
         }
         return [...players].sort((a, b) => b.score - a.score);
@@ -713,6 +763,31 @@
 
     function getAlivePlayers() {
         return players.filter(p => !p.eliminated);
+    }
+
+    function getFirstAlivePlayerIndex() {
+        for (let i = 0; i < numPlayers; i++) {
+            if (!players[i].eliminated && (!inSuddenDeath || players[i].inSD)) return i;
+        }
+        return 0;
+    }
+
+    function getNextTurnIndex() {
+        let next = (turnIndex + 1) % numPlayers;
+        let safety = 0;
+        while (safety < numPlayers * 2) {
+            let p = players[next];
+            if (!p.eliminated) {
+                if (inSuddenDeath) {
+                    if (p.inSD) return next;
+                } else {
+                    return next;
+                }
+            }
+            next = (next + 1) % numPlayers;
+            safety++;
+        }
+        return next;
     }
 
     function resetBall() {
@@ -726,7 +801,11 @@
     }
 
     function switchScreen(screenId) {
-        const screens = ['menu-screen', 'game-over-screen', 'full-leaderboard-screen', 'game-screen', 'update-log-screen', 'adjust-popup-screen', 'elim-popup-screen'];
+        const screens = [
+            'menu-screen', 'game-over-screen', 'full-leaderboard-screen', 
+            'game-screen', 'update-log-screen', 'adjust-popup-screen', 
+            'elim-popup-screen', 'tiebreaker-popup-screen'
+        ];
         screens.forEach(id => document.getElementById(id).classList.add('hidden'));
         document.getElementById(screenId).classList.remove('hidden');
     }
@@ -753,7 +832,9 @@
     }
 
     function openLeaderboard() {
-        previousGameState = gameState;
+        if (gameState !== 'leaderboard') {
+            previousGameState = gameState;
+        }
         gameState = 'leaderboard';
         document.getElementById('full-leaderboard-screen').classList.remove('hidden');
         
@@ -769,7 +850,8 @@
             
             let scoreText = `${p.score} pts`;
             if (gameMode === 'elimination') {
-                if (p.eliminated) scoreText += ' (elim)';
+                if (p.eliminated) scoreText += ` (rank: ${p.elimRank})`;
+                else if (p.elimRank === 1) scoreText += ` (winner)`;
                 else scoreText += ` | rd: ${p.roundScore}`;
             }
 
@@ -794,8 +876,15 @@
 
         if (gameMode === 'standard' || gameMode === 'mini') {
             turnSub.innerText = `first to ${TARGET_SCORE}`;
+            turnSub.style.color = '#888';
         } else {
-            turnSub.innerText = `rd ${roundNumber} | roll ${p.roundRolls + 1}/3 | rd score: ${p.roundScore}`;
+            if (inSuddenDeath) {
+                turnSub.innerText = `sudden death tiebreaker! 1 roll`;
+                turnSub.style.color = '#ff0055';
+            } else {
+                turnSub.innerText = `rd ${roundNumber} | roll ${p.roundRolls + 1}/3 | rd score: ${p.roundScore}`;
+                turnSub.style.color = '#888';
+            }
         }
 
         const miniLb = document.getElementById('mini-lb-content');
@@ -828,6 +917,65 @@
             p.maxBounces = currentBounces;
         }
 
+        // Sudden Death Branch
+        if (inSuddenDeath) {
+            if (slot.label === 'reset') p.sdScore = 0; // fallback
+            else p.sdScore += slot.value;
+            
+            p.sdRolls++;
+            
+            let sdPlayers = players.filter(pl => pl.inSD);
+            let sdRoundOver = sdPlayers.every(pl => pl.sdRolls >= 1);
+            
+            if (sdRoundOver) {
+                let minSD = Math.min(...sdPlayers.map(x => x.sdScore));
+                let sdLosers = sdPlayers.filter(x => x.sdScore === minSD);
+                
+                if (sdLosers.length === 1) {
+                    let loser = sdLosers[0];
+                    loser.eliminated = true;
+                    loser.elimRank = currentElimRank--;
+                    inSuddenDeath = false;
+                    players.forEach(pl => { pl.inSD = false; pl.sdRolls = 0; pl.sdScore = 0; });
+                    
+                    let alive = getAlivePlayers();
+                    if (alive.length === 1) {
+                        alive[0].elimRank = currentElimRank--;
+                        showElimPopup([loser], () => endGame(alive[0]));
+                    } else {
+                        roundNumber++;
+                        alive.forEach(pl => { pl.roundRolls = 0; pl.roundScore = 0; });
+                        showElimPopup([loser], () => {
+                            turnIndex = getFirstAlivePlayerIndex();
+                            updateUI();
+                            resetBall();
+                        });
+                    }
+                } else {
+                    // They tied AGAIN in sudden death!
+                    players.forEach(pl => {
+                        if (sdLosers.includes(pl)) {
+                            pl.sdRolls = 0;
+                            pl.sdScore = 0;
+                        } else {
+                            pl.inSD = false; // Safe
+                        }
+                    });
+                    showTiebreakerPopup(sdLosers, () => {
+                        turnIndex = getFirstAlivePlayerIndex();
+                        updateUI();
+                        resetBall();
+                    });
+                }
+            } else {
+                turnIndex = getNextTurnIndex();
+                updateUI();
+                resetBall();
+            }
+            return;
+        }
+
+        // Normal Scoring Branch
         let othersScores = players.filter(pl => pl.id !== p.id).map(pl => pl.score);
         let maxOtherScore = Math.max(...othersScores, 0);
         
@@ -856,7 +1004,7 @@
                 endGame(p);
                 return;
             }
-            turnIndex = (turnIndex + 1) % numPlayers;
+            turnIndex = getNextTurnIndex();
             updateUI();
             resetBall();
         } 
@@ -869,32 +1017,41 @@
                 let minScore = Math.min(...alive.map(pl => pl.roundScore));
                 let losers = alive.filter(pl => pl.roundScore === minScore);
                 
-                losers.forEach(l => l.eliminated = true);
-                
-                let stillAlive = getAlivePlayers();
-                if (stillAlive.length === 1) {
-                    showElimPopup(losers, () => endGame(stillAlive[0]));
-                    return;
-                } else if (stillAlive.length === 0) {
-                    showElimPopup(losers, () => endGame(null));
-                    return;
-                } else {
-                    roundNumber++;
-                    stillAlive.forEach(pl => {
-                        pl.roundRolls = 0;
-                        pl.roundScore = 0;
+                if (losers.length > 1) {
+                    // Trigger Sudden Death!
+                    inSuddenDeath = true;
+                    losers.forEach(l => {
+                        l.inSD = true;
+                        l.sdRolls = 0;
+                        l.sdScore = 0;
                     });
-                    showElimPopup(losers, () => {
-                        do { turnIndex = (turnIndex + 1) % numPlayers; } while (players[turnIndex].eliminated && getAlivePlayers().length > 0);
+                    
+                    showTiebreakerPopup(losers, () => {
+                        turnIndex = getFirstAlivePlayerIndex();
                         updateUI();
                         resetBall();
                     });
-                    return;
+                } else {
+                    let loser = losers[0];
+                    loser.eliminated = true;
+                    loser.elimRank = currentElimRank--;
+                    
+                    let stillAlive = getAlivePlayers();
+                    if (stillAlive.length === 1) {
+                        stillAlive[0].elimRank = currentElimRank--;
+                        showElimPopup([loser], () => endGame(stillAlive[0]));
+                    } else {
+                        roundNumber++;
+                        stillAlive.forEach(pl => { pl.roundRolls = 0; pl.roundScore = 0; });
+                        showElimPopup([loser], () => {
+                            turnIndex = getFirstAlivePlayerIndex();
+                            updateUI();
+                            resetBall();
+                        });
+                    }
                 }
             } else {
-                do {
-                    turnIndex = (turnIndex + 1) % numPlayers;
-                } while (players[turnIndex].eliminated && getAlivePlayers().length > 0);
+                turnIndex = getNextTurnIndex();
                 updateUI();
                 resetBall();
             }
@@ -934,12 +1091,8 @@
         
         const container = document.getElementById('game-over-screen');
         container.innerHTML = '';
-        container.scrollTop = 0;
         
         let sorted = getSortedPlayers();
-        if (winnerPlayer) {
-            sorted = [winnerPlayer, ...players.filter(p => p.id !== winnerPlayer.id).sort((a,b) => b.score - a.score)];
-        }
 
         if (sorted[0]) {
             let desc = `Finished with ${sorted[0].score} points. (Total collected: ${sorted[0].rawPoints})`;
@@ -1038,10 +1191,16 @@
                 <h2 style="font-size: 3rem; margin-bottom: 30px; letter-spacing: 3px; color: #fff; text-shadow: 0 0 20px #fff;">game over</h2>
                 <button class="btn" onclick="startGame()">play again</button>
                 <button class="btn" onclick="showMenu()" style="margin-top: 15px;">main menu</button>
+                <button class="btn btn-small" onclick="openLeaderboard()" style="margin-top: 25px;">leaderboard</button>
             </div>
         `;
 
         switchScreen('game-over-screen');
+        
+        // Force scroll back to the very top cleanly
+        setTimeout(() => {
+            container.scrollTo(0, 0);
+        }, 10);
     }
 
     function handleBarrierCollision(ball, rect) {
@@ -1076,7 +1235,9 @@
     }
 
     function update() {
-        if (gameState === 'leaderboard' || !document.getElementById('elim-popup-screen').classList.contains('hidden')) {
+        if (gameState === 'leaderboard' || 
+            !document.getElementById('elim-popup-screen').classList.contains('hidden') ||
+            !document.getElementById('tiebreaker-popup-screen').classList.contains('hidden')) {
             requestAnimationFrame(update);
             return;
         }
